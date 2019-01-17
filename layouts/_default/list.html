@@ -1,7 +1,21 @@
 {{ define "main" }}
 
 {{ $truncate := default true .Site.Params.truncate }}
-{{ range .Paginator.Pages }}
+
+{{ if .Content }}
+<header>
+    <h1 class="blog-post-title">
+        <a class="text-dark" href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+    </h1>
+    <hr>
+</header>
+<section class="blog-post">
+    {{ .Content }}
+</section>
+{{ end }}
+
+{{ $paginator := .Paginate (where .Pages "Type" "post") }}
+{{ range $paginator.Pages }}
 
     {{ if $truncate }}
         {{ .Render "summary" }}
